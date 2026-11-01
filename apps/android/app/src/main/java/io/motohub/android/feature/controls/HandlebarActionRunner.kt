@@ -28,6 +28,8 @@ internal sealed interface HandlebarActionPlan {
     data class Dashboard(val action: HandlebarAction) : HandlebarActionPlan
     /** The rider's music player. */
     data class Media(val action: HandlebarAction) : HandlebarActionPlan
+    /** The phone itself - calls, assistant, Maps - with no Android Auto involved. */
+    data class Phone(val action: HandlebarAction) : HandlebarActionPlan
 }
 
 internal fun planFor(action: HandlebarAction): HandlebarActionPlan = when (action) {
@@ -55,6 +57,10 @@ internal fun planFor(action: HandlebarAction): HandlebarActionPlan = when (actio
     HandlebarAction.MEDIA_PREVIOUS,
     HandlebarAction.MEDIA_VOLUME_UP,
     HandlebarAction.MEDIA_VOLUME_DOWN -> HandlebarActionPlan.Media(action)
+    HandlebarAction.PHONE_VOICE,
+    HandlebarAction.PHONE_ANSWER_OR_VOICE,
+    HandlebarAction.PHONE_HANG_UP,
+    HandlebarAction.PHONE_OPEN_MAPS -> HandlebarActionPlan.Phone(action)
 }
 
 /**
@@ -101,6 +107,7 @@ object HandlebarActionRunner {
             is HandlebarActionPlan.Scroll -> sendScroll(plan.delta, log)
             is HandlebarActionPlan.Nav -> navToSavedPlace(context, plan.slot, log)
             is HandlebarActionPlan.Media -> performMedia(context, plan.action, log)
+            is HandlebarActionPlan.Phone -> performPhone(context, plan.action, log)
             is HandlebarActionPlan.Dashboard -> {
                 val sink = dashboardSink
                 if (sink == null) {
@@ -163,6 +170,15 @@ object HandlebarActionRunner {
             false
         }
     }
+
+    private fun performPhone(context: Context, action: HandlebarAction, log: (String) -> Unit): Boolean =
+        when (action) {
+            HandlebarAction.PHONE_VOICE -> PhoneActions.openVoiceAssistant(context, log)
+            HandlebarAction.PHONE_ANSWER_OR_VOICE -> PhoneActions.answerOrVoice(context, log)
+            HandlebarAction.PHONE_HANG_UP -> PhoneActions.hangUp(context, log)
+            HandlebarAction.PHONE_OPEN_MAPS -> PhoneActions.openMaps(context, log)
+            else -> false
+        }
 
     fun sendKey(keycode: Int, log: (String) -> Unit): Boolean {
         // Routes through AndroidAutoPreviewRuntime (not AaInputBridge directly) so this reaches

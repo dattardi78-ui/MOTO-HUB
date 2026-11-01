@@ -35,7 +35,13 @@ enum class HandlebarAction(val id: String, val label: String) {
     MEDIA_NEXT("mediaNext", "Music: next track"),
     MEDIA_PREVIOUS("mediaPrevious", "Music: previous track"),
     MEDIA_VOLUME_UP("mediaVolumeUp", "Music: volume up"),
-    MEDIA_VOLUME_DOWN("mediaVolumeDown", "Music: volume down")
+    MEDIA_VOLUME_DOWN("mediaVolumeDown", "Music: volume down"),
+
+    // Phone verbs for riding without Android Auto (Maps mirrored on the TFT). See PhoneActions.
+    PHONE_VOICE("phoneVoice", "Phone: voice assistant (Gemini)"),
+    PHONE_ANSWER_OR_VOICE("phoneAnswerOrVoice", "Phone: answer call, else voice assistant"),
+    PHONE_HANG_UP("phoneHangUp", "Phone: end / reject call"),
+    PHONE_OPEN_MAPS("phoneOpenMaps", "Phone: bring Google Maps to front")
 }
 
 /**

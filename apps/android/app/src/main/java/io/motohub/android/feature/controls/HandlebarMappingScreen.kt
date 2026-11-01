@@ -1143,6 +1143,7 @@ private enum class ActionFamily(val title: String, val color: Color) {
     MUSIC("MUSIC", MotoHubMirror),
     SYSTEM("SYSTEM", MotoHubLive),
     NAVIGATION("NAVIGATE TO", MotoHubManual),
+    PHONE("PHONE (NO ANDROID AUTO)", MotoHubFavorite),
     OFF("OFF", Color(0xFF8C93A0))
 }
 
@@ -1159,6 +1160,8 @@ private fun HandlebarAction.family(): ActionFamily = when (this) {
     HandlebarAction.DASH_WIDGET_LEFT, HandlebarAction.DASH_WIDGET_RIGHT -> ActionFamily.DASHBOARD
     HandlebarAction.MEDIA_PLAY_PAUSE, HandlebarAction.MEDIA_NEXT, HandlebarAction.MEDIA_PREVIOUS,
     HandlebarAction.MEDIA_VOLUME_UP, HandlebarAction.MEDIA_VOLUME_DOWN -> ActionFamily.MUSIC
+    HandlebarAction.PHONE_VOICE, HandlebarAction.PHONE_ANSWER_OR_VOICE,
+    HandlebarAction.PHONE_HANG_UP, HandlebarAction.PHONE_OPEN_MAPS -> ActionFamily.PHONE
 }
 
 private fun HandlebarAction.glyph(): String = when (this) {
@@ -1186,6 +1189,10 @@ private fun HandlebarAction.glyph(): String = when (this) {
     HandlebarAction.MEDIA_PREVIOUS -> "⏮"
     HandlebarAction.MEDIA_VOLUME_UP -> "🔊"
     HandlebarAction.MEDIA_VOLUME_DOWN -> "🔉"
+    HandlebarAction.PHONE_VOICE -> "✦"
+    HandlebarAction.PHONE_ANSWER_OR_VOICE -> "📞"
+    HandlebarAction.PHONE_HANG_UP -> "☎"
+    HandlebarAction.PHONE_OPEN_MAPS -> "🗺"
 }
 
 private fun HandlebarAction.shortLabel(): String = when (this) {
@@ -1213,6 +1220,10 @@ private fun HandlebarAction.shortLabel(): String = when (this) {
     HandlebarAction.MEDIA_PREVIOUS -> "Previous"
     HandlebarAction.MEDIA_VOLUME_UP -> "Vol +"
     HandlebarAction.MEDIA_VOLUME_DOWN -> "Vol −"
+    HandlebarAction.PHONE_VOICE -> "Gemini"
+    HandlebarAction.PHONE_ANSWER_OR_VOICE -> "Answer/Gem"
+    HandlebarAction.PHONE_HANG_UP -> "Hang up"
+    HandlebarAction.PHONE_OPEN_MAPS -> "Maps"
 }
 
 private const val HIGHLIGHT_MILLIS = 1_400L

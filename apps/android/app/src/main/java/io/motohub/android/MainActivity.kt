@@ -288,6 +288,19 @@ class MainActivity : ComponentActivity() {
         finish()
     }
 
+    /** Lets the handlebar answer and end calls (PhoneActions). Asked once at start; never blocks. */
+    private val callPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        ProjectionEventLog.record("PERMISSION", "Answer phone calls permission result: granted=$granted.")
+    }
+
+    private fun requestCallPermissionIfMissing() {
+        if (!io.motohub.android.feature.controls.PhoneActions.hasCallPermission(this)) {
+            runCatching { callPermissionLauncher.launch(Manifest.permission.ANSWER_PHONE_CALLS) }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ProjectionEventLog.record("UI", "Main activity created.")
@@ -298,6 +311,7 @@ class MainActivity : ComponentActivity() {
         handleAndroidAutoPreviewLaunchIntent(intent)
         handleHandlebarBluetoothRequestIntent(intent)
         handleTBoxScanPermissionRequestIntent(intent)
+        if (savedInstanceState == null) requestCallPermissionIfMissing()
 
         setContent {
             MotoHubTheme {

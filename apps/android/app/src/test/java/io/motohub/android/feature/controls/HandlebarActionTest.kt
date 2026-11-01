@@ -43,7 +43,11 @@ class HandlebarActionPlanTest {
             HandlebarAction.MEDIA_NEXT to HandlebarActionPlan.Media(HandlebarAction.MEDIA_NEXT),
             HandlebarAction.MEDIA_PREVIOUS to HandlebarActionPlan.Media(HandlebarAction.MEDIA_PREVIOUS),
             HandlebarAction.MEDIA_VOLUME_UP to HandlebarActionPlan.Media(HandlebarAction.MEDIA_VOLUME_UP),
-            HandlebarAction.MEDIA_VOLUME_DOWN to HandlebarActionPlan.Media(HandlebarAction.MEDIA_VOLUME_DOWN)
+            HandlebarAction.MEDIA_VOLUME_DOWN to HandlebarActionPlan.Media(HandlebarAction.MEDIA_VOLUME_DOWN),
+            HandlebarAction.PHONE_VOICE to HandlebarActionPlan.Phone(HandlebarAction.PHONE_VOICE),
+            HandlebarAction.PHONE_ANSWER_OR_VOICE to HandlebarActionPlan.Phone(HandlebarAction.PHONE_ANSWER_OR_VOICE),
+            HandlebarAction.PHONE_HANG_UP to HandlebarActionPlan.Phone(HandlebarAction.PHONE_HANG_UP),
+            HandlebarAction.PHONE_OPEN_MAPS to HandlebarActionPlan.Phone(HandlebarAction.PHONE_OPEN_MAPS)
         )
         // Fails when an action is added without deciding here what it does, rather than silently
         // covering 14 of 15.
