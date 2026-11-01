@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   apk:
@@ -44,3 +44,14 @@ jobs:
           name: moto-hub-phone-actions-apk
           path: apps/android/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
+
+      - name: Publish APK as release "personale"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cp apps/android/app/build/outputs/apk/debug/*.apk MOTO-HUB-Phone.apk
+          gh release view personale >/dev/null 2>&1 || \
+            gh release create personale --target "$GITHUB_SHA" --title "MOTO-HUB Phone (personale)" \
+              --notes "Build personale: Maps in mirroring + BR80 per radio, chiamate e Gemini."
+          gh release upload personale MOTO-HUB-Phone.apk --clobber

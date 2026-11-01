@@ -113,6 +113,14 @@ android {
     }
 
     signingConfigs {
+        // Personal fork: a fixed debug key committed to the repo, so every CI build installs
+        // as an update of the previous one instead of failing on a changed signature.
+        create("personalDebug") {
+            storeFile = file("keys/personal-debug.jks")
+            storePassword = "android"
+            keyAlias = "personal"
+            keyPassword = "android"
+        }
         if (hasLocalReleaseSigning) {
             create("localRelease") {
                 storeFile = localSigningStore
@@ -125,6 +133,10 @@ android {
 
     buildTypes {
         debug {
+            // Personal fork: installs next to the official MOTO-HUB instead of replacing it.
+            applicationIdSuffix = ".personal"
+            manifestPlaceholders["appLabel"] = "MOTO-HUB Phone"
+            signingConfig = signingConfigs.getByName("personalDebug")
             // Local variant only — nothing built from "debug" is ever published: GitHub gets
             // release builds exclusively (exportPublicApk assembles the release variant).
             // Kept minified and non-debuggable so a local install behaves like the shipped
